@@ -509,7 +509,7 @@ public class SettingsUI extends javax.swing.JFrame {
             AudDisp1600.setResizable(true);
             AudDisp1600.setVisible(true);
             toggleFullscreen.setEnabled(true);
-            isFullscreen = false;         
+            isFullscreen = false;
             audIsOpen = true;
         }else if(AudDispOpen == 2 && isFullscreen){
             AudDisp1366.dispose();
@@ -545,7 +545,7 @@ public class SettingsUI extends javax.swing.JFrame {
             audIsOpen = true;
         }
     }
-    
+
     public static void enterFullscreen(){
          if(SettingsUI.AudDispOpen == 0 && AudDisp1920.isVisible() && isFullscreen == false){//1900
              AudDisp1920.dispose();
@@ -603,9 +603,9 @@ public class SettingsUI extends javax.swing.JFrame {
             toggleFullscreen.setEnabled(true);
             audIsOpen = true;
         }
-        
+
     }
-    
+
     public static void toggleFullscreen(){
         if(isFullscreen){
             exitFullscreen();
@@ -613,7 +613,7 @@ public class SettingsUI extends javax.swing.JFrame {
             enterFullscreen();
         }
     }
-    
+
     
     
     private void RedCenControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCenControlSelectActionPerformed
@@ -779,7 +779,7 @@ public class SettingsUI extends javax.swing.JFrame {
             BlueCenControlSelect.removeAllItems();
             RedCorControlSelect.removeAllItems();
             BlueCorControlSelect.removeAllItems();
-            TimerControlSelect.removeAllItems();  
+            TimerControlSelect.removeAllItems();
             JoystickTest.foundControllers.clear();
             JoystickTest.searchForControllers(false);
             controllerLoopRun = true;
@@ -870,7 +870,7 @@ public static int getSelectedControllerNameRedCor(){
 public static int getSelectedControllerNameBlueCor(){
     return BlueCorControlSelect.getSelectedIndex();
     }
-    
+
 public static int getSelectedControllerNameTimer(){
     return TimerControlSelect.getSelectedIndex();
     }

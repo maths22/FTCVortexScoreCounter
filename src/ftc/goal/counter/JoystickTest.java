@@ -130,11 +130,11 @@ public class JoystickTest {
                 }
                 
                 // Add new controller to the list on the window.
-                SettingsUI.addControllerName(controller.getName() + " - " + controller.hashCode());
+                SettingsUI.addControllerName(controller.getName() + " - " + controller.getPortNumber() + " - " + controller.hashCode());
             } 
         }
     }
-        
+
     public static void updateJSstatusDisplays(int display, int color){
         //color 1 = red, color 2 = orange, color 3 = green
         //display 1 = RedCen, display 2 = RedCor,
@@ -403,7 +403,7 @@ public class JoystickTest {
             default:
                 break;
         }
-   
+
     }
     
     /**
@@ -1043,7 +1043,6 @@ public class JoystickTest {
                             pressLstJSTimerXbtn = false;
                         }
 
-                        GoalCounterUI.goal.TimerXBtn();
 
                     }
 
@@ -1051,7 +1050,7 @@ public class JoystickTest {
                         // Is button pressed?
 
                         if(componenttimer.getPollData() != 0.0f){
-                            PressJSTimerBack = true;    
+                            PressJSTimerBack = true;
                         }else{
                             PressJSTimerBack = false;
                         }
@@ -1060,7 +1059,6 @@ public class JoystickTest {
                             pressLstJSTimerBack = false;
                         }
 
-                        GoalCounterUI.goal.TimerBack();
 
                     }
 
@@ -1068,7 +1066,7 @@ public class JoystickTest {
                         // Is button pressed?
 
                         if(componenttimer.getPollData() != 0.0f){
-                            PressJSTimerStart = true;    
+                            PressJSTimerStart = true;
                         }else{
                             PressJSTimerStart = false;
                         }
@@ -1077,7 +1075,6 @@ public class JoystickTest {
                             pressLstJSTimerStart = false;
                         }
 
-                        GoalCounterUI.goal.TimerStart();
 
                     }
                 }
@@ -1088,7 +1085,7 @@ public class JoystickTest {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(JoystickTest.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }   
+            }
         }
     }
     
