@@ -6,6 +6,7 @@ package ftc.goal.counter;
  * During the 2016 - 2017 Game
  */
 
+import static ftc.goal.counter.GoalCounterUI.logger;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,16 +74,11 @@ public class JoystickTest {
     static public boolean PressJSBlueCorRT = false;
     static public boolean pressLstJSBlueCorRB = false;
     static public boolean PressJSBlueCorRB = false;
-    static public boolean pressLstJSTimerXbtn = false;
-    static public boolean PressJSTimerXbtn = false;
-    static public boolean pressLstJSTimerStart = false;
-    static public boolean PressJSTimerStart = false;
-    static public boolean pressLstJSTimerBack = false;
-    static public boolean PressJSTimerBack = false;
     static public boolean BlueCorIcon = false;
     static public boolean RedCorIcon = false;
     static public boolean BlueCenIcon = false;
     static public boolean RedCenIcon = false;
+    static boolean alwaysTrue = true;
     
     static public ArrayList<Controller> foundControllers;
     static public ArrayList<Controller> searchControllers;
@@ -96,6 +92,7 @@ public class JoystickTest {
         if(!foundControllers.isEmpty()){
             startShowingControllerData();
         }else{
+            logger.info("No Controllers Found");
             SettingsUI.NoControllerName();
             SettingsUI.controllerLoopRun = false;
             startShowingControllerData();
@@ -115,6 +112,7 @@ public class JoystickTest {
         if (directEnv.isSupported()) {
             controllers = directEnv.getControllers();
         } else {
+            logger.info("Direct Environment is not Supported, Controller Refresh will not work");
             controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
         }
         
@@ -125,8 +123,10 @@ public class JoystickTest {
                 // Add new controller to the list of all controllers.
                 if(look){
                   searchControllers.add(controller);  
+                  GoalCounterUI.logger.info("Search Controllers Found:" + controller.getName() + " - " + controller.hashCode());
                 }else{
                   foundControllers.add(controller);
+                  GoalCounterUI.logger.info("Found Controller: " + controller.getName() + " - " + controller.hashCode());
                 }
                 
                 // Add new controller to the list on the window.
@@ -134,284 +134,13 @@ public class JoystickTest {
             } 
         }
     }
-
-    public static void updateJSstatusDisplays(int display, int color){
-        //color 1 = red, color 2 = orange, color 3 = green
-        //display 1 = RedCen, display 2 = RedCor,
-        //display 3 = BlueCen, display 4 = BlueCor
-        switch (display) {
-            case 1:
-                switch (color) {
-                    case 1:
-                        AudDisplay1600.RedCenJSGreen.setVisible(false);
-                        AudDisplay1600.RedCenJSOrange.setVisible(false);
-                        AudDisplay1600.RedCenJSRed.setVisible(true);
-                        AudDisplay1366.RedCenJSGreen.setVisible(false);
-                        AudDisplay1366.RedCenJSOrange.setVisible(false);
-                        AudDisplay1366.RedCenJSRed.setVisible(true);
-                        AudDisplay1920.RedCenJSGreen.setVisible(false);
-                        AudDisplay1920.RedCenJSOrange.setVisible(false);
-                        AudDisplay1920.RedCenJSRed.setVisible(true);
-                        AudDisplay1024.RedCenJSGreen.setVisible(false);
-                        AudDisplay1024.RedCenJSOrange.setVisible(false);
-                        AudDisplay1024.RedCenJSRed.setVisible(true);
-                        AudDisplay800.RedCenJSGreen.setVisible(false);
-                        AudDisplay800.RedCenJSOrange.setVisible(false);
-                        AudDisplay800.RedCenJSRed.setVisible(true);
-                        AudDisplay1280.RedCenJSGreen.setVisible(false);
-                        AudDisplay1280.RedCenJSOrange.setVisible(false);
-                        AudDisplay1280.RedCenJSRed.setVisible(true);
-                        break;
-                    case 2:
-                        AudDisplay1600.RedCenJSGreen.setVisible(false);
-                        AudDisplay1600.RedCenJSOrange.setVisible(true);
-                        AudDisplay1600.RedCenJSRed.setVisible(false);
-                        AudDisplay1366.RedCenJSGreen.setVisible(false);
-                        AudDisplay1366.RedCenJSOrange.setVisible(true);
-                        AudDisplay1366.RedCenJSRed.setVisible(false);
-                        AudDisplay1920.RedCenJSGreen.setVisible(false);
-                        AudDisplay1920.RedCenJSOrange.setVisible(true);
-                        AudDisplay1920.RedCenJSRed.setVisible(false);
-                        AudDisplay1024.RedCenJSGreen.setVisible(false);
-                        AudDisplay1024.RedCenJSOrange.setVisible(true);
-                        AudDisplay1024.RedCenJSRed.setVisible(false);
-                        AudDisplay800.RedCenJSGreen.setVisible(false);
-                        AudDisplay800.RedCenJSOrange.setVisible(true);
-                        AudDisplay800.RedCenJSRed.setVisible(false);
-                        AudDisplay1280.RedCenJSGreen.setVisible(false);
-                        AudDisplay1280.RedCenJSOrange.setVisible(true);
-                        AudDisplay1280.RedCenJSRed.setVisible(false);
-                        break;
-                    case 3:
-                        AudDisplay1600.RedCenJSGreen.setVisible(true);
-                        AudDisplay1600.RedCenJSOrange.setVisible(false);
-                        AudDisplay1600.RedCenJSRed.setVisible(false);
-                        AudDisplay1366.RedCenJSGreen.setVisible(true);
-                        AudDisplay1366.RedCenJSOrange.setVisible(false);
-                        AudDisplay1366.RedCenJSRed.setVisible(false);
-                        AudDisplay1920.RedCenJSGreen.setVisible(true);
-                        AudDisplay1920.RedCenJSOrange.setVisible(false);
-                        AudDisplay1920.RedCenJSRed.setVisible(false);
-                        AudDisplay1024.RedCenJSGreen.setVisible(true);
-                        AudDisplay1024.RedCenJSOrange.setVisible(false);
-                        AudDisplay1024.RedCenJSRed.setVisible(false);
-                        AudDisplay800.RedCenJSGreen.setVisible(true);
-                        AudDisplay800.RedCenJSOrange.setVisible(false);
-                        AudDisplay800.RedCenJSRed.setVisible(false);
-                        AudDisplay1280.RedCenJSGreen.setVisible(true);
-                        AudDisplay1280.RedCenJSOrange.setVisible(false);
-                        AudDisplay1280.RedCenJSRed.setVisible(false);
-                        break;
-                    default:
-                        break;
-                }   break;
-            case 2:
-                switch (color) {
-                    case 1:
-                        AudDisplay1600.RedCorJSGreen.setVisible(false);
-                        AudDisplay1600.RedCorJSOrange.setVisible(false);
-                        AudDisplay1600.RedCorJSRed.setVisible(true);
-                        AudDisplay1366.RedCorJSGreen.setVisible(false);
-                        AudDisplay1366.RedCorJSOrange.setVisible(false);
-                        AudDisplay1366.RedCorJSRed.setVisible(true);
-                        AudDisplay1920.RedCorJSGreen.setVisible(false);
-                        AudDisplay1920.RedCorJSOrange.setVisible(false);
-                        AudDisplay1920.RedCorJSRed.setVisible(true);
-                        AudDisplay1024.RedCorJSGreen.setVisible(false);
-                        AudDisplay1024.RedCorJSOrange.setVisible(false);
-                        AudDisplay1024.RedCorJSRed.setVisible(true);
-                        AudDisplay800.RedCorJSGreen.setVisible(false);
-                        AudDisplay800.RedCenJSOrange.setVisible(false);
-                        AudDisplay800.RedCenJSRed.setVisible(true);
-                        AudDisplay1280.RedCorJSGreen.setVisible(false);
-                        AudDisplay1280.RedCorJSOrange.setVisible(false);
-                        AudDisplay1280.RedCorJSRed.setVisible(true);
-                        break;
-                    case 2:
-                        AudDisplay1600.RedCorJSGreen.setVisible(false);
-                        AudDisplay1600.RedCorJSOrange.setVisible(true);
-                        AudDisplay1600.RedCorJSRed.setVisible(false);
-                        AudDisplay1366.RedCorJSGreen.setVisible(false);
-                        AudDisplay1366.RedCorJSOrange.setVisible(true);
-                        AudDisplay1366.RedCorJSRed.setVisible(false);
-                        AudDisplay1920.RedCorJSGreen.setVisible(false);
-                        AudDisplay1920.RedCorJSOrange.setVisible(true);
-                        AudDisplay1920.RedCorJSRed.setVisible(false);
-                        AudDisplay1024.RedCorJSGreen.setVisible(false);
-                        AudDisplay1024.RedCorJSOrange.setVisible(true);
-                        AudDisplay1024.RedCorJSRed.setVisible(false);
-                        AudDisplay800.RedCorJSGreen.setVisible(false);
-                        AudDisplay800.RedCorJSOrange.setVisible(true);
-                        AudDisplay800.RedCorJSRed.setVisible(false);
-                        AudDisplay1280.RedCorJSGreen.setVisible(false);
-                        AudDisplay1280.RedCorJSOrange.setVisible(true);
-                        AudDisplay1280.RedCorJSRed.setVisible(false);
-                        break;
-                    case 3:
-                        AudDisplay1600.RedCorJSGreen.setVisible(true);
-                        AudDisplay1600.RedCorJSOrange.setVisible(false);
-                        AudDisplay1600.RedCorJSRed.setVisible(false);
-                        AudDisplay1366.RedCorJSGreen.setVisible(true);
-                        AudDisplay1366.RedCorJSOrange.setVisible(false);
-                        AudDisplay1366.RedCorJSRed.setVisible(false);
-                        AudDisplay1920.RedCorJSGreen.setVisible(true);
-                        AudDisplay1920.RedCorJSOrange.setVisible(false);
-                        AudDisplay1920.RedCorJSRed.setVisible(false);
-                        AudDisplay1024.RedCorJSGreen.setVisible(true);
-                        AudDisplay1024.RedCorJSOrange.setVisible(false);
-                        AudDisplay1024.RedCorJSRed.setVisible(false);
-                        AudDisplay800.RedCorJSGreen.setVisible(true);
-                        AudDisplay800.RedCorJSOrange.setVisible(false);
-                        AudDisplay800.RedCorJSRed.setVisible(false);
-                        AudDisplay1280.RedCorJSGreen.setVisible(true);
-                        AudDisplay1280.RedCorJSOrange.setVisible(false);
-                        AudDisplay1280.RedCorJSRed.setVisible(false);
-                        break;
-                    default:
-                        break;
-                }   break;
-            case 3:
-                switch (color) {
-                    case 1:
-                        AudDisplay1600.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1600.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1600.BlueCenJSRed.setVisible(true);
-                        AudDisplay1366.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1366.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1366.BlueCenJSRed.setVisible(true);
-                        AudDisplay1920.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1920.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1920.BlueCenJSRed.setVisible(true);
-                        AudDisplay1024.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1024.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1024.BlueCenJSRed.setVisible(true);
-                        AudDisplay800.BlueCenJSGreen.setVisible(false);
-                        AudDisplay800.BlueCenJSOrange.setVisible(false);
-                        AudDisplay800.BlueCenJSRed.setVisible(true);
-                        AudDisplay1280.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1280.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1280.BlueCenJSRed.setVisible(true);
-                        break;
-                    case 2:
-                        AudDisplay1600.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1600.BlueCenJSOrange.setVisible(true);
-                        AudDisplay1600.BlueCenJSRed.setVisible(false);
-                        AudDisplay1366.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1366.BlueCenJSOrange.setVisible(true);
-                        AudDisplay1366.BlueCenJSRed.setVisible(false);
-                        AudDisplay1920.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1920.BlueCenJSOrange.setVisible(true);
-                        AudDisplay1920.BlueCenJSRed.setVisible(false);
-                        AudDisplay1024.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1024.BlueCenJSOrange.setVisible(true);
-                        AudDisplay1024.BlueCenJSRed.setVisible(false);
-                        AudDisplay800.BlueCenJSGreen.setVisible(false);
-                        AudDisplay800.BlueCenJSOrange.setVisible(true);
-                        AudDisplay800.BlueCenJSRed.setVisible(false);
-                        AudDisplay1280.BlueCenJSGreen.setVisible(false);
-                        AudDisplay1280.BlueCenJSOrange.setVisible(true);
-                        AudDisplay1280.BlueCenJSRed.setVisible(false);
-                        break;
-                    case 3:
-                        AudDisplay1600.BlueCenJSGreen.setVisible(true);
-                        AudDisplay1600.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1600.BlueCenJSRed.setVisible(false);
-                        AudDisplay1366.BlueCenJSGreen.setVisible(true);
-                        AudDisplay1366.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1366.BlueCenJSRed.setVisible(false);
-                        AudDisplay1920.BlueCenJSGreen.setVisible(true);
-                        AudDisplay1920.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1920.BlueCenJSRed.setVisible(false);
-                        AudDisplay1024.BlueCenJSGreen.setVisible(true);
-                        AudDisplay1024.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1024.BlueCenJSRed.setVisible(false);
-                        AudDisplay800.BlueCenJSGreen.setVisible(true);
-                        AudDisplay800.BlueCenJSOrange.setVisible(false);
-                        AudDisplay800.BlueCenJSRed.setVisible(false);
-                        AudDisplay1280.BlueCenJSGreen.setVisible(true);
-                        AudDisplay1280.BlueCenJSOrange.setVisible(false);
-                        AudDisplay1280.BlueCenJSRed.setVisible(false);
-                        break;
-                    default:
-                        break;
-                }   break;
-            case 4:
-                switch (color) {
-                    case 1:
-                        AudDisplay1600.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1600.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1600.BlueCorJSRed.setVisible(true);
-                        AudDisplay1366.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1366.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1366.BlueCorJSRed.setVisible(true);
-                        AudDisplay1920.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1920.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1920.BlueCorJSRed.setVisible(true);
-                        AudDisplay1024.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1024.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1024.BlueCorJSRed.setVisible(true);
-                        AudDisplay800.BlueCorJSGreen.setVisible(false);
-                        AudDisplay800.BlueCorJSOrange.setVisible(false);
-                        AudDisplay800.BlueCorJSRed.setVisible(true);
-                        AudDisplay1280.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1280.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1280.BlueCorJSRed.setVisible(true);
-                        break;
-                    case 2:
-                        AudDisplay1600.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1600.BlueCorJSOrange.setVisible(true);
-                        AudDisplay1600.BlueCorJSRed.setVisible(false);
-                        AudDisplay1366.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1366.BlueCorJSOrange.setVisible(true);
-                        AudDisplay1366.BlueCorJSRed.setVisible(false);
-                        AudDisplay1920.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1920.BlueCorJSOrange.setVisible(true);
-                        AudDisplay1920.BlueCorJSRed.setVisible(false);
-                        AudDisplay1024.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1024.BlueCorJSOrange.setVisible(true);
-                        AudDisplay1024.BlueCorJSRed.setVisible(false);
-                        AudDisplay800.BlueCorJSGreen.setVisible(false);
-                        AudDisplay800.BlueCorJSOrange.setVisible(true);
-                        AudDisplay800.BlueCorJSRed.setVisible(false);
-                        AudDisplay1280.BlueCorJSGreen.setVisible(false);
-                        AudDisplay1280.BlueCorJSOrange.setVisible(true);
-                        AudDisplay1280.BlueCorJSRed.setVisible(false);
-                        break;
-                    case 3:
-                        AudDisplay1600.BlueCorJSGreen.setVisible(true);
-                        AudDisplay1600.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1600.BlueCorJSRed.setVisible(false);
-                        AudDisplay1366.BlueCorJSGreen.setVisible(true);
-                        AudDisplay1366.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1366.BlueCorJSRed.setVisible(false);
-                        AudDisplay1920.BlueCorJSGreen.setVisible(true);
-                        AudDisplay1920.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1920.BlueCorJSRed.setVisible(false);
-                        AudDisplay1024.BlueCorJSGreen.setVisible(true);
-                        AudDisplay1024.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1024.BlueCorJSRed.setVisible(false);
-                        AudDisplay800.BlueCorJSGreen.setVisible(true);
-                        AudDisplay800.BlueCorJSOrange.setVisible(false);
-                        AudDisplay800.BlueCorJSRed.setVisible(false);
-                        AudDisplay1280.BlueCorJSGreen.setVisible(true);
-                        AudDisplay1280.BlueCorJSOrange.setVisible(false);
-                        AudDisplay1280.BlueCorJSRed.setVisible(false);
-                        break;
-                    default:
-                        break;
-                }   break;
-            default:
-                break;
-        }
-
-    }
     
     /**
      * Starts showing controller data on the window.
      */
     public static void startShowingControllerData(){
-        while(true){
-            GoalCounterUI.spinnersync();
+        while(alwaysTrue){
+            GoalCounterUI.spinnersync(false);
             if(SettingsUI.controllerLoopRun){
                 // Currently selected controller.
                 int selectedControllerRedCen = SettingsUI.getSelectedControllerNameRedCen();
@@ -425,22 +154,10 @@ public class JoystickTest {
                 }
 
                 Controller controllerRedCen = foundControllers.get(selectedControllerRedCen);
-
-                // Pull controller for current data, and break while loop if controller is disconnected.
-                if( !controllerRedCen.poll() ){
-                   // window.showControllerDisconnected();
-                   // break;
-                }
-
+                
                 int selectedControllerBlueCen = SettingsUI.getSelectedControllerNameBlueCen();
                 Controller controllerBlueCen = foundControllers.get(selectedControllerBlueCen);
-
-                // Pull controller for current data, and break while loop if controller is disconnected.
-
-                if( !controllerBlueCen.poll() ){
-                   // window.showControllerDisconnected();
-                   // break;
-                }
+                
 
                int selectedControllerRedCor = SettingsUI.getSelectedControllerNameRedCor();
                if (selectedControllerRedCor == -1){
@@ -448,151 +165,106 @@ public class JoystickTest {
                 }
                 Controller controllerRedCor = foundControllers.get(selectedControllerRedCor);
 
-                // Pull controller for current data, and break while loop if controller is disconnected.
-
-                if( !controllerRedCor.poll() ){
-                   // window.showControllerDisconnected();
-                   // break;
-                }
-
                 int selectedControllerBlueCor = SettingsUI.getSelectedControllerNameBlueCor();
                 if (selectedControllerBlueCen == -1){
                     selectedControllerBlueCen = 0;
                 }
+                
                 Controller controllerBlueCor = foundControllers.get(selectedControllerBlueCor);
 
-                // Pull controller for current data, and break while loop if controller is disconnected.
-
-                if( !controllerBlueCor.poll() ){
-                   // window.showControllerDisconnected();
-                   // break;
-                }
-
-            int selectedControllerTimer = SettingsUI.getSelectedControllerNameTimer();
             if (selectedControllerBlueCor == -1){
                     selectedControllerBlueCor = 0;
-                }
-                Controller controllerTimer = foundControllers.get(selectedControllerTimer);
-
-                // Pull controller for current data, and break while loop if controller is disconnected.
-
-                if( !controllerTimer.poll() ){
-                   // window.showControllerDisconnected();
-                   // break;
                 }
 
                 if( !controllerRedCen.poll() ){
                     //peach color
+                    logger.severe("Cannot Poll Red Center Controller" + controllerRedCen.hashCode() + " - " + controllerRedCen.getName());
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(1, 1);
-                }else if(SettingsUI.RedCenBtn == false && SettingsUI.RedCenLeft == false && SettingsUI.RedCenRight == false){
+                }else if(!SettingsUI.RedCenBtn && !SettingsUI.RedCenLeft && !SettingsUI.RedCenRight){
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(1, 1);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenBtn == true && SettingsUI.RedCorBtn == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenBtn && SettingsUI.RedCorBtn){
                     //Orange
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(1, 2);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenLeft == true && SettingsUI.RedCorLeft == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenLeft && SettingsUI.RedCorLeft){
                     //Orange
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(1, 2);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenRight == true && SettingsUI.RedCorRight == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenRight && SettingsUI.RedCorRight){
                     //Orange
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(1, 2);
                 }else if(selectedControllerRedCen == selectedControllerBlueCen || selectedControllerRedCen == selectedControllerBlueCor){
                     //Orange
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(1, 2);
                 }else {
                     //green
                     GoalCounterUI.RedCenJSStatus.setBackground(new java.awt.Color(0, 166, 81));
-                    updateJSstatusDisplays(1, 3);
                 }
 
                 if( !controllerRedCor.poll() ){
+                    logger.severe("Cannot Poll Red Corner Controller" + controllerRedCor.hashCode() + " - " + controllerRedCor.getName());
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(2, 1);
-                }else if(SettingsUI.RedCorBtn == false && SettingsUI.RedCorLeft == false && SettingsUI.RedCorRight == false){
+                }else if(!SettingsUI.RedCorBtn && !SettingsUI.RedCorLeft && !SettingsUI.RedCorRight){
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(2, 1);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenBtn == true && SettingsUI.RedCorBtn == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenBtn && SettingsUI.RedCorBtn){
                     //Orange
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(2, 2);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenLeft == true && SettingsUI.RedCorLeft == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenLeft && SettingsUI.RedCorLeft){
                     //Orange
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(2, 2);
-                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenRight == true && SettingsUI.RedCorRight == true){
+                }else if(selectedControllerRedCen == selectedControllerRedCor && SettingsUI.RedCenRight && SettingsUI.RedCorRight){
                         //Orange
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(2, 2);
                 }else if(selectedControllerRedCor == selectedControllerBlueCen || selectedControllerRedCor == selectedControllerBlueCor){
                     //Orange
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(2, 2);
                 }else {
                     //green
                     GoalCounterUI.RedCorJSStatus.setBackground(new java.awt.Color(0, 166, 81));
-                    updateJSstatusDisplays(2, 3);
                 }
                 
                 if( !controllerBlueCor.poll() ){
+                    logger.severe("Cannot Poll Blue Corner Controller" + controllerBlueCor.hashCode() + " - " + controllerBlueCor.getName());
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(3, 1);
-                }else if(SettingsUI.BlueCorBtn == false && SettingsUI.BlueCorLeft == false && SettingsUI.BlueCorRight == false){
+                }else if(!SettingsUI.BlueCorBtn && !SettingsUI.BlueCorLeft && !SettingsUI.BlueCorRight){
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(3, 1);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenBtn == true && SettingsUI.BlueCorBtn == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenBtn && SettingsUI.BlueCorBtn){
                     //Orange
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(3, 2);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenLeft == true && SettingsUI.BlueCorLeft == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenLeft && SettingsUI.BlueCorLeft){
                     //Orange
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(3, 2);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenRight == true && SettingsUI.BlueCorRight == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenRight && SettingsUI.BlueCorRight){
                     //Orange
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(3, 2);
                 }else if(selectedControllerBlueCor == selectedControllerRedCen || selectedControllerBlueCor == selectedControllerRedCor){
                     //Orange
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(3, 2);
                 }else {
                     //green
                     GoalCounterUI.BlueCorJSStatus.setBackground(new java.awt.Color(0, 166, 81));
-                    updateJSstatusDisplays(3, 3);
                 }
+                
                 if( !controllerBlueCen.poll() ){
+                    logger.severe("Cannot Poll Blue Center Controller" + controllerBlueCen.hashCode() + " - " + controllerBlueCen.getName());
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(4, 1);
-                }else if(SettingsUI.BlueCenBtn == false && SettingsUI.BlueCenLeft == false && SettingsUI.BlueCenRight == false){
+                }else if(!SettingsUI.BlueCenBtn && !SettingsUI.BlueCenLeft && !SettingsUI.BlueCenRight){
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(238, 190, 171));
-                    updateJSstatusDisplays(4, 1);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenBtn == true && SettingsUI.BlueCorBtn == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenBtn && SettingsUI.BlueCorBtn){
                     //Orange
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(4, 2);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenLeft == true && SettingsUI.BlueCorLeft == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenLeft && SettingsUI.BlueCorLeft){
                     //Orange
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(4, 2);
-                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenRight == true && SettingsUI.BlueCorRight == true){
+                }else if(selectedControllerBlueCen == selectedControllerBlueCor && SettingsUI.BlueCenRight && SettingsUI.BlueCorRight){
                         //Orange
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(4, 2);
                 }else if(selectedControllerBlueCen == selectedControllerRedCen || selectedControllerBlueCen == selectedControllerRedCor){
                     //Orange
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(245, 126, 37));
-                    updateJSstatusDisplays(4, 2);
                 }else {
                     //green
                     GoalCounterUI.BlueCenJSStatus.setBackground(new java.awt.Color(0, 166, 81));
-                    updateJSstatusDisplays(4, 3);
-                }           
-
+                }
+                
                 // Go trough all components of the controller.
                 Component[] components = controllerRedCen.getComponents();
                 for(int i=0; i < components.length; i++){
@@ -613,7 +285,7 @@ public class JoystickTest {
                         }
 
 
-                        if(PressJSRedCenAbtn == false){
+                        if(!PressJSRedCenAbtn){
                             pressLstJSRedCenAbtn = false;
                         }
 
@@ -633,7 +305,7 @@ public class JoystickTest {
                             PressJSRedCenBbtn = false;
                         }
 
-                        if(PressJSRedCenBbtn == false){
+                        if(!PressJSRedCenBbtn){
                             pressLstJSRedCenBbtn = false;
                         }
 
@@ -652,7 +324,7 @@ public class JoystickTest {
                         }
 
 
-                        if(PressJSRedCenLB == false){
+                        if(!PressJSRedCenLB){
                             pressLstJSRedCenLB = false;
                         }
 
@@ -671,7 +343,7 @@ public class JoystickTest {
                         }
 
 
-                        if(PressJSRedCenRB == false){
+                        if(!PressJSRedCenRB){
                             pressLstJSRedCenRB = false;
                         }
 
@@ -687,7 +359,7 @@ public class JoystickTest {
                             PressJSRedCenRT = false;
                         }
 
-                        if(PressJSRedCenRT == false){
+                        if(!PressJSRedCenRT){
                             pressLstJSRedCenRT = false;
                         }
                         GoalCounterUI.goal.DcrsRedCenRT();
@@ -701,7 +373,7 @@ public class JoystickTest {
                             PressJSRedCenLT = false;
                         }
 
-                        if(PressJSRedCenLT == false){
+                        if(!PressJSRedCenLT){
                             pressLstJSRedCenLT = false;
                         }
                         GoalCounterUI.goal.DcrsRedCenLT();
@@ -729,7 +401,7 @@ public class JoystickTest {
                         }
 
 
-                        if(PressJSBlueCenAbtn == false){
+                        if(!PressJSBlueCenAbtn){
                             pressLstJSBlueCenAbtn = false;
                         }
 
@@ -746,7 +418,7 @@ public class JoystickTest {
                             PressJSBlueCenBbtn = false;
                         }
 
-                        if(PressJSBlueCenBbtn == false){
+                        if(!PressJSBlueCenBbtn){
                             pressLstJSBlueCenBbtn = false;
                         }
 
@@ -763,7 +435,7 @@ public class JoystickTest {
                             PressJSBlueCenLB = false;
                         }
 
-                        if(PressJSBlueCenLB == false){
+                        if(!PressJSBlueCenLB){
                             pressLstJSBlueCenLB = false;
                         }
 
@@ -780,7 +452,7 @@ public class JoystickTest {
                             PressJSBlueCenRB = false;
                         }
 
-                        if(PressJSBlueCenRB == false){
+                        if(!PressJSBlueCenRB){
                             pressLstJSBlueCenRB = false;
                         }
 
@@ -795,7 +467,7 @@ public class JoystickTest {
                             PressJSBlueCenRT = false;
                         }
 
-                        if(PressJSBlueCenRT == false){
+                        if(!PressJSBlueCenRT){
                             pressLstJSBlueCenRT = false;
                         }
                         GoalCounterUI.goal.DcrsBlueCenRT();
@@ -808,7 +480,7 @@ public class JoystickTest {
                             PressJSBlueCenLT = false;
                         }
 
-                        if(PressJSBlueCenLT == false){
+                        if(!PressJSBlueCenLT){
                             pressLstJSBlueCenLT = false;
                         }
                         GoalCounterUI.goal.DcrsBlueCenLT();
@@ -833,7 +505,7 @@ public class JoystickTest {
                             PressJSRedCorAbtn = false;
                         }
                         
-                        if(PressJSRedCorAbtn == false){
+                        if(!PressJSRedCorAbtn){
                             pressLstJSRedCorAbtn = false;
                         }
                         
@@ -850,7 +522,7 @@ public class JoystickTest {
                             PressJSRedCorBbtn = false;
                         }
 
-                        if(PressJSRedCorBbtn == false){
+                        if(!PressJSRedCorBbtn){
                             pressLstJSRedCorBbtn = false;
                         }
 
@@ -868,7 +540,7 @@ public class JoystickTest {
                         }
 
 
-                        if(PressJSRedCorLB == false){
+                        if(!PressJSRedCorLB){
                             pressLstJSRedCorLB = false;
                         }
 
@@ -884,7 +556,7 @@ public class JoystickTest {
                             PressJSRedCorRB = false;
                         }
 
-                        if(PressJSRedCorRB == false){
+                        if(!PressJSRedCorRB){
                             pressLstJSRedCorRB = false;
                         }
 
@@ -899,7 +571,7 @@ public class JoystickTest {
                             PressJSRedCorRT = false;
                         }
 
-                        if(PressJSRedCorRT == false){
+                        if(!PressJSRedCorRT){
                             pressLstJSRedCorRT = false;
                         }
                         GoalCounterUI.goal.DcrsRedCorRT();
@@ -912,7 +584,7 @@ public class JoystickTest {
                             PressJSRedCorLT = false;
                         }
 
-                        if(PressJSRedCorLT == false){
+                        if(!PressJSRedCorLT){
                             pressLstJSRedCorLT = false;
                         }
                         GoalCounterUI.goal.DcrsRedCorLT();
@@ -936,7 +608,7 @@ public class JoystickTest {
                             PressJSBlueCorAbtn = false;
                         }
 
-                        if(PressJSBlueCorAbtn == false){
+                        if(!PressJSBlueCorAbtn){
                             pressLstJSBlueCorAbtn = false;
                         }
 
@@ -953,7 +625,7 @@ public class JoystickTest {
                             PressJSBlueCorBbtn = false;
                         }
 
-                        if(PressJSBlueCorBbtn == false){
+                        if(!PressJSBlueCorBbtn){
                             pressLstJSBlueCorBbtn = false;
                         }
 
@@ -970,7 +642,7 @@ public class JoystickTest {
                             PressJSBlueCorLB = false;
                         }
 
-                        if(PressJSBlueCorLB == false){
+                        if(!PressJSBlueCorLB){
                             pressLstJSBlueCorLB = false;
                         }
 
@@ -987,7 +659,7 @@ public class JoystickTest {
                             PressJSBlueCorRB = false;
                         }
 
-                        if(PressJSBlueCorRB == false){
+                        if(!PressJSBlueCorRB){
                             pressLstJSBlueCorRB = false;
                         }
 
@@ -1002,7 +674,7 @@ public class JoystickTest {
                             PressJSBlueCorRT = false;
                         }
 
-                        if(PressJSBlueCorRT == false){
+                        if(!PressJSBlueCorRT){
                             pressLstJSBlueCorRT = false;
                         }
                         GoalCounterUI.goal.DcrsBlueCorRT();
@@ -1015,68 +687,12 @@ public class JoystickTest {
                             PressJSBlueCorLT = false;
                         }
 
-                        if(PressJSBlueCorLT == false){
+                        if(!PressJSBlueCorLT){
                             pressLstJSBlueCorLT = false;
                         }
                         GoalCounterUI.goal.DcrsBlueCorLT();
                     }   
 
-                }
-
-            Component[] componentstimer = controllerTimer.getComponents();
-                for(int i=0; i < componentstimer.length; i++)
-                {
-                    Component componenttimer = componentstimer[i];
-                    Identifier componentIdentifierTimer = componenttimer.getIdentifier();
-
-                    if(componentIdentifierTimer.getName().matches("^[2]*$")){ // This is for Center Controller RB Button
-                        // Is button pressed?
-
-                        if(componenttimer.getPollData() != 0.0f){
-                            PressJSTimerXbtn = true;
-                        }else{
-                            PressJSTimerXbtn = false;
-
-                        }
-
-                        if(PressJSTimerXbtn == false){
-                            pressLstJSTimerXbtn = false;
-                        }
-
-
-                    }
-
-                    if(componentIdentifierTimer.getName().matches("^[6]*$")){ // This is for Center Controller RB Button
-                        // Is button pressed?
-
-                        if(componenttimer.getPollData() != 0.0f){
-                            PressJSTimerBack = true;
-                        }else{
-                            PressJSTimerBack = false;
-                        }
-
-                        if(PressJSTimerBack == false){
-                            pressLstJSTimerBack = false;
-                        }
-
-
-                    }
-
-                    if(componentIdentifierTimer.getName().matches("^[7]*$")){ // This is for Center Controller RB Button
-                        // Is button pressed?
-
-                        if(componenttimer.getPollData() != 0.0f){
-                            PressJSTimerStart = true;
-                        }else{
-                            PressJSTimerStart = false;
-                        }
-
-                        if(PressJSTimerStart == false){
-                            pressLstJSTimerStart = false;
-                        }
-
-
-                    }
                 }
 
                 // We have to give processor some rest.
@@ -1087,6 +703,7 @@ public class JoystickTest {
                 }
             }
         }
+        logger.severe("Joystick Update loop crashed");
     }
     
 }

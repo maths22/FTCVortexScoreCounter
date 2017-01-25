@@ -6,26 +6,18 @@
  */
 package ftc.goal.counter;
 
-import com.sun.glass.events.KeyEvent;
-import static ftc.goal.counter.GoalCounterUI.AudDisp1024;
-import static ftc.goal.counter.GoalCounterUI.isFullscreen;
-import javax.swing.JFrame;
-import static ftc.goal.counter.GoalCounterUI.AudDisp1366;
-import static ftc.goal.counter.GoalCounterUI.AudDisp1600;
-import static ftc.goal.counter.GoalCounterUI.AudDisp800;
-import static ftc.goal.counter.GoalCounterUI.JSConfigView;
-import static ftc.goal.counter.GoalCounterUI.audIsOpen;
-import static ftc.goal.counter.GoalCounterUI.AudDisp1920;
-import static ftc.goal.counter.GoalCounterUI.AudDisp1280;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import static ftc.goal.counter.GoalCounterUI.JSConfigView;
+import static ftc.goal.counter.GoalCounterUI.logger;
+
+
 /**
- *
  * @author afera
  */
 public class SettingsUI extends javax.swing.JFrame {
-       
+
     public static boolean RedCenBtn = true;
     public static boolean RedCenLeft = false;
     public static boolean RedCenRight = false;
@@ -42,12 +34,8 @@ public class SettingsUI extends javax.swing.JFrame {
     public static boolean RedCor = false;
     public static boolean BlueCen = false;
     public static boolean BlueCor = false;
-    public static boolean ModeChange = true;
-    public static boolean JSTimer = true;
-    public static boolean Reset = true;
-    public static int AudDispOpen = 0;
     static public boolean controllerLoopRun = true;
-    
+
     /**
      * Creates new form SettingsUI
      */
@@ -90,23 +78,10 @@ public class SettingsUI extends javax.swing.JFrame {
         BCorVor = new javax.swing.JLabel();
         Save = new javax.swing.JButton();
         RePullJS = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        TimerControlSelect = new javax.swing.JComboBox();
-        JSControllerLabel = new javax.swing.JLabel();
-        Mode = new javax.swing.JCheckBox();
-        AudDisplayLabel = new javax.swing.JLabel();
-        toggleFullscreen = new javax.swing.JButton();
         JSMap = new javax.swing.JButton();
-        JSTimeSelector = new javax.swing.JCheckBox();
-        JSReset = new javax.swing.JCheckBox();
 
         setTitle("Settings");
         setResizable(false);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
 
         red.setBackground(new java.awt.Color(237, 28, 36));
         red.setBorder(javax.swing.BorderFactory.createTitledBorder("Red Alliance"));
@@ -358,45 +333,10 @@ public class SettingsUI extends javax.swing.JFrame {
             }
         });
 
-        RePullJS.setText("Re-Pull Joysticks");
+        RePullJS.setText("Re-Poll Joysticks");
         RePullJS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RePullJSActionPerformed(evt);
-            }
-        });
-
-        jComboBox1.setMaximumRowCount(6);
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1920 X 1080", "1600 x 1200", "1366 x 768", "1280 x 720", "1024 x 768", "800 x 600" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-
-        TimerControlSelect.setName(""); // NOI18N
-        TimerControlSelect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TimerControlSelectActionPerformed(evt);
-            }
-        });
-
-        JSControllerLabel.setText("Timer Controller");
-
-        Mode.setSelected(true);
-        Mode.setText("Mode Change");
-        Mode.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModeActionPerformed(evt);
-            }
-        });
-
-        AudDisplayLabel.setText("Audience Display Controls");
-
-        toggleFullscreen.setText("Toggle Fullscreen");
-        toggleFullscreen.setEnabled(false);
-        toggleFullscreen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggleFullscreenActionPerformed(evt);
             }
         });
 
@@ -404,22 +344,6 @@ public class SettingsUI extends javax.swing.JFrame {
         JSMap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JSMapActionPerformed(evt);
-            }
-        });
-
-        JSTimeSelector.setSelected(true);
-        JSTimeSelector.setText("Timer Controls");
-        JSTimeSelector.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JSTimeSelectorActionPerformed(evt);
-            }
-        });
-
-        JSReset.setSelected(true);
-        JSReset.setText("Reset");
-        JSReset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JSResetActionPerformed(evt);
             }
         });
 
@@ -434,32 +358,14 @@ public class SettingsUI extends javax.swing.JFrame {
                         .addComponent(red, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(blue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 1, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(JSMap)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(RePullJS)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Save))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TimerControlSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JSControllerLabel)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(JSTimeSelector)
-                                .addGap(18, 18, 18)
-                                .addComponent(JSReset)
-                                .addGap(18, 18, 18)
-                                .addComponent(Mode)))
-                        .addGap(193, 193, 193)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(AudDisplayLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(34, 34, 34))
-                            .addComponent(toggleFullscreen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(Save)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -469,21 +375,7 @@ public class SettingsUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(blue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(red, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JSControllerLabel)
-                    .addComponent(AudDisplayLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TimerControlSelect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(toggleFullscreen)
-                    .addComponent(Mode)
-                    .addComponent(JSTimeSelector)
-                    .addComponent(JSReset))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RePullJS)
                     .addComponent(Save)
@@ -494,152 +386,29 @@ public class SettingsUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static void exitFullscreen(){
-        if(AudDispOpen == 0 && isFullscreen){
-            AudDisp1920.dispose();
-            AudDisp1920.setUndecorated(false);
-            AudDisp1920.setResizable(true);
-            AudDisp1920.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            audIsOpen = true;
-            isFullscreen = false;
-        }else if(AudDispOpen == 1 && isFullscreen){
-            AudDisp1600.dispose();
-            AudDisp1600.setUndecorated(false);
-            AudDisp1600.setResizable(true);
-            AudDisp1600.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            isFullscreen = false;
-            audIsOpen = true;
-        }else if(AudDispOpen == 2 && isFullscreen){
-            AudDisp1366.dispose();
-            AudDisp1366.setUndecorated(false);
-            AudDisp1366.setResizable(true);
-            AudDisp1366.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            isFullscreen = false;
-            audIsOpen = true;
-        }else if(AudDispOpen == 3 && isFullscreen){
-            AudDisp1280.dispose();
-            AudDisp1280.setUndecorated(false);
-            AudDisp1280.setResizable(true);
-            AudDisp1280.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            isFullscreen = false;
-            audIsOpen = true;
-        }else if(AudDispOpen == 4 && isFullscreen){
-            AudDisp1024.dispose();
-            AudDisp1024.setUndecorated(false);
-            AudDisp1024.setResizable(true);
-            AudDisp1024.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            isFullscreen = false;
-            audIsOpen = true;
-        }else if(AudDispOpen == 5 && isFullscreen){
-            AudDisp800.dispose();
-            AudDisp800.setUndecorated(false);
-            AudDisp800.setResizable(true);
-            AudDisp800.setVisible(true);
-            toggleFullscreen.setEnabled(true);
-            isFullscreen = false;
-            audIsOpen = true;
-        }
-    }
 
-    public static void enterFullscreen(){
-         if(SettingsUI.AudDispOpen == 0 && AudDisp1920.isVisible() && isFullscreen == false){//1900
-             AudDisp1920.dispose();
-             AudDisp1920.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             AudDisp1920.setUndecorated(true);
-             AudDisp1920.setResizable(false);
-             AudDisp1920.setVisible(true);
-             isFullscreen = true;
-             toggleFullscreen.setEnabled(true);
-             audIsOpen = true;
-       }else if(SettingsUI.AudDispOpen == 1 && AudDisp1600.isVisible() && isFullscreen == false){//1600
-             AudDisp1600.dispose();
-             AudDisp1600.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             AudDisp1600.setUndecorated(true);
-             AudDisp1600.setResizable(false);
-             AudDisp1600.setVisible(true);
-             isFullscreen = true;
-             audIsOpen = true;
-             SettingsUI.toggleFullscreen.setEnabled(true);
-        }else if(SettingsUI.AudDispOpen == 2 && AudDisp1366.isVisible() && isFullscreen == false){//1366
-             AudDisp1366.dispose();
-             AudDisp1366.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             AudDisp1366.setUndecorated(true);
-             AudDisp1366.setResizable(false);
-             AudDisp1366.setVisible(true);
-             isFullscreen = true;
-             audIsOpen = true;
-             toggleFullscreen.setEnabled(true);
-
-        }else if(SettingsUI.AudDispOpen == 3 && AudDisp1280.isVisible() && isFullscreen == false){//1280
-             AudDisp1280.dispose();
-             AudDisp1280.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             AudDisp1280.setUndecorated(true);
-             AudDisp1280.setResizable(false);
-             AudDisp1280.setVisible(true);
-             isFullscreen = true;
-             toggleFullscreen.setEnabled(true);
-             audIsOpen = true;
-        }else if(SettingsUI.AudDispOpen == 4 && AudDisp1024.isVisible() && isFullscreen == false){//1024
-             AudDisp1024.dispose();
-             AudDisp1024.setExtendedState(JFrame.MAXIMIZED_BOTH);
-             AudDisp1024.setUndecorated(true);
-             AudDisp1024.setResizable(false);
-             AudDisp1024.setVisible(true);
-             isFullscreen = true;
-             toggleFullscreen.setEnabled(true);
-             audIsOpen = true;
-    }else if(SettingsUI.AudDispOpen == 5 && AudDisp800.isVisible() && isFullscreen == false){//800
-            AudDisp800.dispose();
-            AudDisp800.setExtendedState(JFrame.MAXIMIZED_BOTH);
-            AudDisp800.setUndecorated(true);
-            AudDisp800.setResizable(false);
-            AudDisp800.setVisible(true);
-            isFullscreen = true;
-            toggleFullscreen.setEnabled(true);
-            audIsOpen = true;
-        }
-
-    }
-
-    public static void toggleFullscreen(){
-        if(isFullscreen){
-            exitFullscreen();
-        }else{
-            enterFullscreen();
-        }
-    }
-
-    
-    
     private void RedCenControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCenControlSelectActionPerformed
-        
+
     }//GEN-LAST:event_RedCenControlSelectActionPerformed
 
     private void RedCenContButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCenContButtonActionPerformed
-     if(RedCenContButton.isSelected()){
-         RedCenBtn = true;
-         ViewJSConfig.aRedCenter.setEnabled(true);
-                 }
-     else{
-         RedCenBtn = false;
-         ViewJSConfig.aRedCenter.setEnabled(false);
-     }
+        if (RedCenContButton.isSelected()) {
+            RedCenBtn = true;
+            ViewJSConfig.aRedCenter.setEnabled(true);
+        } else {
+            RedCenBtn = false;
+            ViewJSConfig.aRedCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_RedCenContButtonActionPerformed
 
     private void RedCenContLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCenContLeftActionPerformed
-     if(RedCenContLeft.isSelected()){
-         RedCenLeft = true;
-         ViewJSConfig.lbRedCenter.setEnabled(true);
-                 }
-     else{
-         RedCenLeft = false;
-         ViewJSConfig.lbRedCenter.setEnabled(false);
-     }  
+        if (RedCenContLeft.isSelected()) {
+            RedCenLeft = true;
+            ViewJSConfig.lbRedCenter.setEnabled(true);
+        } else {
+            RedCenLeft = false;
+            ViewJSConfig.lbRedCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_RedCenContLeftActionPerformed
 
     private void RedCorControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCorControlSelectActionPerformed
@@ -647,25 +416,23 @@ public class SettingsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_RedCorControlSelectActionPerformed
 
     private void RedCorContButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCorContButtonActionPerformed
-     if(RedCorContButton.isSelected()){
-         RedCorBtn = true;
-         ViewJSConfig.aRedCorner.setEnabled(true);
-                 }
-     else{
-         RedCorBtn = false;
-         ViewJSConfig.aRedCorner.setEnabled(false);
-     }
+        if (RedCorContButton.isSelected()) {
+            RedCorBtn = true;
+            ViewJSConfig.aRedCorner.setEnabled(true);
+        } else {
+            RedCorBtn = false;
+            ViewJSConfig.aRedCorner.setEnabled(false);
+        }
     }//GEN-LAST:event_RedCorContButtonActionPerformed
 
     private void RedCorContLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCorContLeftActionPerformed
-     if(RedCorContLeft.isSelected()){
-         RedCorLeft = true;
-         ViewJSConfig.lbRedCorner.setEnabled(true);
-                 }
-     else{
-         RedCorLeft = false;
-         ViewJSConfig.lbRedCorner.setEnabled(false);
-     }  
+        if (RedCorContLeft.isSelected()) {
+            RedCorLeft = true;
+            ViewJSConfig.lbRedCorner.setEnabled(true);
+        } else {
+            RedCorLeft = false;
+            ViewJSConfig.lbRedCorner.setEnabled(false);
+        }
     }//GEN-LAST:event_RedCorContLeftActionPerformed
 
     private void BlueCenControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCenControlSelectActionPerformed
@@ -673,26 +440,24 @@ public class SettingsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BlueCenControlSelectActionPerformed
 
     private void BlueCenContButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCenContButtonActionPerformed
-     if(BlueCenContButton.isSelected()){
-         BlueCenBtn = true;
-         ViewJSConfig.aBlueCenter.setEnabled(true);
-                 }
-     else{
-         BlueCenBtn = false;
-         ViewJSConfig.aBlueCenter.setEnabled(false);
-     }
+        if (BlueCenContButton.isSelected()) {
+            BlueCenBtn = true;
+            ViewJSConfig.aBlueCenter.setEnabled(true);
+        } else {
+            BlueCenBtn = false;
+            ViewJSConfig.aBlueCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_BlueCenContButtonActionPerformed
 
     private void BlueCenContLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCenContLeftActionPerformed
-     if(BlueCenContLeft.isSelected()){
-         BlueCenLeft = true;
-         ViewJSConfig.lbBlueCenter.setEnabled(true);
-         
-                 }
-     else{
-         BlueCenLeft = false;
-         ViewJSConfig.lbBlueCenter.setEnabled(false);
-     } 
+        if (BlueCenContLeft.isSelected()) {
+            BlueCenLeft = true;
+            ViewJSConfig.lbBlueCenter.setEnabled(true);
+
+        } else {
+            BlueCenLeft = false;
+            ViewJSConfig.lbBlueCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_BlueCenContLeftActionPerformed
 
     private void BlueCorControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCorControlSelectActionPerformed
@@ -700,207 +465,169 @@ public class SettingsUI extends javax.swing.JFrame {
     }//GEN-LAST:event_BlueCorControlSelectActionPerformed
 
     private void BlueCorContLeftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCorContLeftActionPerformed
-     if(BlueCorContLeft.isSelected()){
-         BlueCorLeft = true;
-         ViewJSConfig.lbBlueCorner.setEnabled(true);
-                 }
-     else{
-         BlueCorLeft = false;
-         ViewJSConfig.lbBlueCorner.setEnabled(false);
-     }
+        if (BlueCorContLeft.isSelected()) {
+            BlueCorLeft = true;
+            ViewJSConfig.lbBlueCorner.setEnabled(true);
+        } else {
+            BlueCorLeft = false;
+            ViewJSConfig.lbBlueCorner.setEnabled(false);
+        }
     }//GEN-LAST:event_BlueCorContLeftActionPerformed
 
     private void BlueCorContButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCorContButtonActionPerformed
-     if(BlueCorContButton.isSelected()){
-         BlueCorBtn = true;
-         ViewJSConfig.aBlueCorner.setEnabled(true);
-                 }
-     else{
-         BlueCorBtn = false;
-         ViewJSConfig.aBlueCorner.setEnabled(false);
-     }
+        if (BlueCorContButton.isSelected()) {
+            BlueCorBtn = true;
+            ViewJSConfig.aBlueCorner.setEnabled(true);
+        } else {
+            BlueCorBtn = false;
+            ViewJSConfig.aBlueCorner.setEnabled(false);
+        }
     }//GEN-LAST:event_BlueCorContButtonActionPerformed
 
     private void RedCenContRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCenContRightActionPerformed
-     if(RedCenContRight.isSelected()){
-         RedCenRight = true;
-         ViewJSConfig.rbRedCenter.setEnabled(true);
-                 }
-     else{
-         RedCenRight = false;
-         ViewJSConfig.rbRedCenter.setEnabled(false);
-     }
+        if (RedCenContRight.isSelected()) {
+            RedCenRight = true;
+            ViewJSConfig.rbRedCenter.setEnabled(true);
+        } else {
+            RedCenRight = false;
+            ViewJSConfig.rbRedCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_RedCenContRightActionPerformed
 
     private void BlueCenContRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCenContRightActionPerformed
-     if(BlueCenContRight.isSelected()){
-         BlueCenRight = true;
-         ViewJSConfig.rbBlueCenter.setEnabled(true);
-                 }
-     else{
-         BlueCenRight = false;
-         ViewJSConfig.rbBlueCenter.setEnabled(false);
-     }
+        if (BlueCenContRight.isSelected()) {
+            BlueCenRight = true;
+            ViewJSConfig.rbBlueCenter.setEnabled(true);
+        } else {
+            BlueCenRight = false;
+            ViewJSConfig.rbBlueCenter.setEnabled(false);
+        }
     }//GEN-LAST:event_BlueCenContRightActionPerformed
 
     private void RedCorContRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RedCorContRightActionPerformed
-     if(RedCorContRight.isSelected()){
-         RedCorRight = true;
-         ViewJSConfig.rbRedCorner.setEnabled(true);
-                 }
-     else{
-         RedCorRight = false;
-         ViewJSConfig.rbRedCorner.setEnabled(true);
-     }
+        if (RedCorContRight.isSelected()) {
+            RedCorRight = true;
+            ViewJSConfig.rbRedCorner.setEnabled(true);
+        } else {
+            RedCorRight = false;
+            ViewJSConfig.rbRedCorner.setEnabled(true);
+        }
     }//GEN-LAST:event_RedCorContRightActionPerformed
 
     private void BlueCorContRightActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BlueCorContRightActionPerformed
-     if(BlueCorContRight.isSelected()){
-         BlueCorRight = true;
-         ViewJSConfig.rbBlueCorner.setEnabled(true);
+        if (BlueCorContRight.isSelected()) {
+            BlueCorRight = true;
+            ViewJSConfig.rbBlueCorner.setEnabled(true);
+        } else {
+            BlueCorRight = false;
+            ViewJSConfig.rbBlueCorner.setEnabled(false);
         }
-     else{
-         BlueCorRight = false;
-         ViewJSConfig.rbBlueCorner.setEnabled(false);
-     }
     }//GEN-LAST:event_BlueCorContRightActionPerformed
 
     private void RePullJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RePullJSActionPerformed
         boolean noControllers = false;
         JoystickTest.searchControllers.clear();
         JoystickTest.searchForControllers(true);
-        if(JoystickTest.searchControllers.isEmpty()){
+
+        if (JoystickTest.searchControllers.isEmpty()) {
             noControllers = true;
             NoControllerName();
             controllerLoopRun = false;
             JoystickTest.foundControllers.clear();
-        }else{
-            RedCenControlSelect.removeAllItems();
-            BlueCenControlSelect.removeAllItems();
-            RedCorControlSelect.removeAllItems();
-            BlueCorControlSelect.removeAllItems();
-            TimerControlSelect.removeAllItems();
-            JoystickTest.foundControllers.clear();
-            JoystickTest.searchForControllers(false);
-            controllerLoopRun = true;
+        } else {
+            int RedCenSel = RedCenControlSelect.getSelectedIndex();
+            int RedCorSel = RedCorControlSelect.getSelectedIndex();
+            int BlueCenSel = BlueCenControlSelect.getSelectedIndex();
+            int BlueCorSel = BlueCorControlSelect.getSelectedIndex();
+
+            JoystickTest.searchControllers.clear();
+            JoystickTest.searchForControllers(true);
+            int newContCount = JoystickTest.searchControllers.size();
+            int oldContCount = JoystickTest.foundControllers.size();
+            System.out.println(newContCount + " is the New Controller Count, this is the old: " + oldContCount);
+
+            if (newContCount == oldContCount) {
+                System.out.println("Controller Count The same");
+                RedCenControlSelect.removeAllItems();
+                BlueCenControlSelect.removeAllItems();
+                RedCorControlSelect.removeAllItems();
+                BlueCorControlSelect.removeAllItems();
+                JoystickTest.foundControllers.clear();
+                JoystickTest.searchForControllers(false);
+                controllerLoopRun = true;
+                RedCenControlSelect.setSelectedIndex(RedCenSel);
+                BlueCenControlSelect.setSelectedIndex(BlueCenSel);
+                RedCorControlSelect.setSelectedIndex(RedCorSel);
+                BlueCorControlSelect.setSelectedIndex(BlueCorSel);
+            } else {
+                RedCenControlSelect.removeAllItems();
+                BlueCenControlSelect.removeAllItems();
+                RedCorControlSelect.removeAllItems();
+                BlueCorControlSelect.removeAllItems();
+                JoystickTest.foundControllers.clear();
+                JoystickTest.searchForControllers(false);
+                controllerLoopRun = true;
+            }
+
         }
-     
+
     }//GEN-LAST:event_RePullJSActionPerformed
 
     private void SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SaveActionPerformed
-         this.setVisible(false);
+        this.setVisible(false);
     }//GEN-LAST:event_SaveActionPerformed
 
-    private void TimerControlSelectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TimerControlSelectActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_TimerControlSelectActionPerformed
-
-    private void ModeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModeActionPerformed
-     if(Mode.isSelected()){
-         ModeChange = true;
-         ViewJSConfig.xToggleModes.setEnabled(true);
-                 }
-     else{
-         ModeChange = false;
-         ViewJSConfig.xToggleModes.setEnabled(false);
-     }
-    }//GEN-LAST:event_ModeActionPerformed
-
-    private void toggleFullscreenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleFullscreenActionPerformed
-       toggleFullscreen();
-    }//GEN-LAST:event_toggleFullscreenActionPerformed
-
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        AudDispOpen = jComboBox1.getSelectedIndex();
-    }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void JSMapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JSMapActionPerformed
-        if(!JSConfigView.isVisible()){
+        if (!JSConfigView.isVisible()) {
+            logger.info("Set Joystick Map Visible");
             JSConfigView.setSize(600, 410);
             JSConfigView.setVisible(true);
         }
     }//GEN-LAST:event_JSMapActionPerformed
 
-    private void JSTimeSelectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JSTimeSelectorActionPerformed
-     if(JSTimeSelector.isSelected()){
-         JSTimer = true;
-         ViewJSConfig.TimerToggle1.setEnabled(true);
-         ViewJSConfig.TimerToggle2.setEnabled(true);
-     }else{
-         JSTimer = false;
-         ViewJSConfig.TimerToggle1.setEnabled(false);
-         ViewJSConfig.TimerToggle2.setEnabled(false);
-     }
-    }//GEN-LAST:event_JSTimeSelectorActionPerformed
 
-    private void JSResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JSResetActionPerformed
-     if(JSReset.isSelected()){
-         Reset = true;
-         ViewJSConfig.ResetEverything1.setEnabled(true);
-         ViewJSConfig.ResetEverything2.setEnabled(true);
-     }else{
-         Reset = false;
-         ViewJSConfig.ResetEverything1.setEnabled(false);
-         ViewJSConfig.ResetEverything2.setEnabled(false);
-     }
-    }//GEN-LAST:event_JSResetActionPerformed
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        int key = evt.getKeyCode();
-        if(key == KeyEvent.VK_ESCAPE){
-            SettingsUI.exitFullscreen();
-        }else if(key == KeyEvent.VK_F5){
-            SettingsUI.toggleFullscreen();
-        }
-    }//GEN-LAST:event_formKeyPressed
- 
-   
-public static int getSelectedControllerNameRedCen(){
-    return RedCenControlSelect.getSelectedIndex();
-}
-    
-public static int getSelectedControllerNameBlueCen(){
-    return BlueCenControlSelect.getSelectedIndex();
-    }
-    
-public static int getSelectedControllerNameRedCor(){
-    return RedCorControlSelect.getSelectedIndex();
-    }
-    
-public static int getSelectedControllerNameBlueCor(){
-    return BlueCorControlSelect.getSelectedIndex();
+    public static int getSelectedControllerNameRedCen() {
+        return RedCenControlSelect.getSelectedIndex();
     }
 
-public static int getSelectedControllerNameTimer(){
-    return TimerControlSelect.getSelectedIndex();
+    public static int getSelectedControllerNameBlueCen() {
+        return BlueCenControlSelect.getSelectedIndex();
     }
-    public static void addControllerName(String controllerName){
+
+    public static int getSelectedControllerNameRedCor() {
+        return RedCorControlSelect.getSelectedIndex();
+    }
+
+    public static int getSelectedControllerNameBlueCor() {
+        return BlueCorControlSelect.getSelectedIndex();
+    }
+
+    public static void addControllerName(String controllerName) {
         RedCenControlSelect.addItem(controllerName);
         BlueCenControlSelect.addItem(controllerName);
         RedCorControlSelect.addItem(controllerName);
         BlueCorControlSelect.addItem(controllerName);
-        TimerControlSelect.addItem(controllerName);
     }
-    
-    public static void NoControllerName(){
+
+    public static void NoControllerName() {
         RedCenControlSelect.removeAllItems();
         BlueCenControlSelect.removeAllItems();
         RedCorControlSelect.removeAllItems();
         BlueCorControlSelect.removeAllItems();
-        TimerControlSelect.removeAllItems();
         RedCenControlSelect.addItem("No Controllers Found");
         BlueCenControlSelect.addItem("No Controllers Found");
         RedCorControlSelect.addItem("No Controllers Found");
         BlueCorControlSelect.addItem("No Controllers Found");
-        TimerControlSelect.addItem("No Controllers Found");
     }
 
 //    public void showControllerDisconnected(){
 //        RedCenControlSelect.addItem("Controller disconnected!");
 //        RedCenControlSelect.addItem("Controller disconnected!");
 //    }
-    
-    
+
+
     /**
      * @param args the command line arguments
      */
@@ -938,7 +665,6 @@ public static int getSelectedControllerNameTimer(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel AudDisplayLabel;
     private javax.swing.JLabel BCenVor;
     private javax.swing.JLabel BCorVor;
     private javax.swing.JCheckBox BlueCenContButton;
@@ -951,11 +677,7 @@ public static int getSelectedControllerNameTimer(){
     public static javax.swing.JComboBox BlueCorControlSelect;
     private javax.swing.JLabel CenVor;
     private javax.swing.JLabel CorVor;
-    private javax.swing.JLabel JSControllerLabel;
     private javax.swing.JButton JSMap;
-    private javax.swing.JCheckBox JSReset;
-    private javax.swing.JCheckBox JSTimeSelector;
-    private javax.swing.JCheckBox Mode;
     private javax.swing.JButton RePullJS;
     private javax.swing.JCheckBox RedCenContButton;
     private javax.swing.JCheckBox RedCenContLeft;
@@ -966,10 +688,7 @@ public static int getSelectedControllerNameTimer(){
     private javax.swing.JCheckBox RedCorContRight;
     public static javax.swing.JComboBox RedCorControlSelect;
     private javax.swing.JButton Save;
-    public static javax.swing.JComboBox TimerControlSelect;
     private javax.swing.JPanel blue;
-    public static javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel red;
-    public static javax.swing.JButton toggleFullscreen;
     // End of variables declaration//GEN-END:variables
 }

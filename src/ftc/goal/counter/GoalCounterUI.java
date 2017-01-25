@@ -7,19 +7,16 @@ package ftc.goal.counter;
 
 
 import com.FIRST.FTC.Common.Enumerations;
-import com.maths22.ftc.scoring.RemoteTimer;
 import com.maths22.ftc.scoring.ScoreCount;
-import com.sun.glass.events.KeyEvent;
+import com.maths22.ftc.scoring.TimerMessage;
 import java.awt.Image;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Timer;
-import java.io.InputStream;
+import java.util.logging.Logger;
 
 import com.usfirst.ftc.CompetitionInfo;
 import com.usfirst.ftc.MatchTimer;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
+import com.usfirst.ftc.logging.FTCLogger;
 
 import javax.swing.*;
 
@@ -32,11 +29,8 @@ import javax.swing.*;
  */
 public class GoalCounterUI extends javax.swing.JFrame implements Observer {
 
+    public static final Logger logger = FTCLogger.getInstance();
 
-    //public static boolean AutoState = true;
-    //public static boolean TeleState = false;
-    //public static boolean TimerActive = false;
-    //public static boolean pause = false;
     public static int RedCenAuto = 0;
     public static int BlueCenAuto = 0;
     public static int RedCorAuto = 0;
@@ -45,23 +39,13 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     public static int BlueCenTele = 0;
     public static int RedCorTele = 0;
     public static int BlueCorTele = 0;
-    public static AudDisplay1600 AudDisp1600;
-    public static AudDisplay1366 AudDisp1366;
-    public static AudDisplay1920 AudDisp1920;
-    public static AudDisplay1024 AudDisp1024;
-    public static AudDisplay800 AudDisp800;
-    public static AudDisplay1280 AudDisp1280;
+
     public static ViewJSConfig JSConfigView;
     public static AboutUI about;
     public static JoystickTest JS;
     public static SettingsUI settings;
-    public static Timer timer;
-    //public static int GameClock = 150;
-    //public static int ClockRemaining = 150;
-    public static boolean isFullscreen = false;
-    public static boolean audIsOpen = false;
     public static String iconURL = "/ftc/goal/counter/images/FIRSTicon_RGB_withTM.png";
-    public static final String version = "1.0.2";
+    public static final String version = "1.0.3";
 
     /**
      * Creates new form GoalCounterUI
@@ -72,159 +56,70 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         Image img = new ImageIcon(getClass().getResource(iconURL)).getImage();
         setIconImage(img);
         remoteTimer.dummyInit();
-        MatchTimer.addTimerObserver(this);
+        remoteTimer.addObserver(this);
+        timerPanel.add(remoteTimer.panel);
     }
 
-    private static ScoreCount lastScoreCount = null;
+    private static ScoreCount lastScoreCount = new ScoreCount();
 
-    public static void spinnersync(){
-          RedCenAuto = (Integer) RedCenAutoSpin.getValue();
-          BlueCenAuto = (Integer) BlueCenAutoSpin.getValue();
-          RedCorAuto = (Integer) RedCorAutoSpin.getValue();
-          BlueCorAuto = (Integer) BlueCorAutoSpin.getValue();
-          RedCenTele = (Integer) RedCenTeleSpin.getValue();
-          BlueCenTele = (Integer) BlueCenTeleSpin.getValue();
-          RedCorTele = (Integer) RedCorTeleSpin.getValue();
-          BlueCorTele = (Integer) BlueCorTeleSpin.getValue();
+    public static void spinnersync(boolean force){
+            RedCenAuto = (Integer) RedCenAutoSpin.getValue();
+            BlueCenAuto = (Integer) BlueCenAutoSpin.getValue();
+            RedCorAuto = (Integer) RedCorAutoSpin.getValue();
+            BlueCorAuto = (Integer) BlueCorAutoSpin.getValue();
+            RedCenTele = (Integer) RedCenTeleSpin.getValue();
+            BlueCenTele = (Integer) BlueCenTeleSpin.getValue();
+            RedCorTele = (Integer) RedCorTeleSpin.getValue();
+            BlueCorTele = (Integer) BlueCorTeleSpin.getValue();
 
-          ScoreCount newScoreCount = new ScoreCount();
-          newScoreCount.setField(remoteTimer.getField());
-          newScoreCount.setBlueAutoCenter(BlueCenAuto);
-          newScoreCount.setBlueAutoCorner(BlueCorAuto);
-          newScoreCount.setBlueDriverCenter(BlueCenTele);
-          newScoreCount.setBlueDriverCorner(BlueCorTele);
-          newScoreCount.setRedAutoCenter(RedCenAuto);
-          newScoreCount.setRedAutoCorner(RedCorAuto);
-          newScoreCount.setRedDriverCenter(RedCenTele);
-          newScoreCount.setRedDriverCorner(RedCorTele);
+            ScoreCount newScoreCount = new ScoreCount();
+            newScoreCount.setField(remoteTimer.getField());
+            newScoreCount.setBlueAutoCenter(BlueCenAuto);
+            newScoreCount.setBlueAutoCorner(BlueCorAuto);
+            newScoreCount.setBlueDriverCenter(BlueCenTele);
+            newScoreCount.setBlueDriverCorner(BlueCorTele);
+            newScoreCount.setRedAutoCenter(RedCenAuto);
+            newScoreCount.setRedAutoCorner(RedCorAuto);
+            newScoreCount.setRedDriverCenter(RedCenTele);
+            newScoreCount.setRedDriverCorner(RedCorTele);
 
-          if(!newScoreCount.equals(lastScoreCount)) {
-              lastScoreCount = newScoreCount;
-             remoteTimer.updateScoreCount(lastScoreCount);
-          }
-          //1600
-          AudDisplay1600.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay1600.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay1600.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay1600.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay1600.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay1600.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay1600.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay1600.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
-          //1366
-          AudDisplay1366.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay1366.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay1366.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay1366.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay1366.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay1366.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay1366.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay1366.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
-          //1080
-          AudDisplay1920.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay1920.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay1920.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay1920.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay1920.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay1920.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay1920.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay1920.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
-          //1024
-          AudDisplay1024.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay1024.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay1024.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay1024.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay1024.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay1024.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay1024.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay1024.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
-          //800
-          AudDisplay800.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay800.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay800.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay800.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay800.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay800.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay800.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay800.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
-          //720
-          AudDisplay1280.RedCenAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCenAuto));
-          AudDisplay1280.RedCenTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCenTele));
-          AudDisplay1280.RedCorAutoDisplay.setText(Integer.toString(GoalCounterUI.RedCorAuto));
-          AudDisplay1280.RedCorTeleDisplay.setText(Integer.toString(GoalCounterUI.RedCorTele));
-          AudDisplay1280.BlueCenAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCenAuto));
-          AudDisplay1280.BlueCenTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCenTele));
-          AudDisplay1280.BlueCorAutoDisplay.setText(Integer.toString(GoalCounterUI.BlueCorAuto));
-          AudDisplay1280.BlueCorTeleDisplay.setText(Integer.toString(GoalCounterUI.BlueCorTele));
+        synchronized (lastScoreCount) {
+            if (!newScoreCount.equals(lastScoreCount) || force) {
+                lastScoreCount = newScoreCount;
+                remoteTimer.updateScoreCount(lastScoreCount);
+            }
+        }
   }
 
-    private static void notifyUpdatedScore() {
-        System.out.println("updated");
-    }
 
-
-    public static void resetTimerElements(){
-            MatchTimer.reset();
-            
+    public static void resetcounters(){
+        RedCenAuto = 0;
+        RedCorAuto = 0;
+        BlueCenAuto = 0;
+        BlueCorAuto = 0;
+        RedCenTele = 0;
+        RedCorTele = 0;
+        BlueCenTele = 0;
+        BlueCorTele = 0;
+        RedCenAutoSpin.setValue(0);
+        RedCenTeleSpin.setValue(0);
+        RedCorAutoSpin.setValue(0);
+        RedCorTeleSpin.setValue(0);
+        BlueCenAutoSpin.setValue(0);
+        BlueCenTeleSpin.setValue(0);
+        BlueCorAutoSpin.setValue(0);
+        BlueCorTeleSpin.setValue(0);
+        spinnersync(true);
     }
-    
-        public static void resetcounters(){
-            RedCenAuto = 0;
-            RedCorAuto = 0;
-            BlueCenAuto = 0;
-            BlueCorAuto = 0;
-            RedCenTele = 0;
-            RedCorTele = 0;
-            BlueCenTele = 0;
-            BlueCorTele = 0;
-            RedCenAutoSpin.setValue(0);
-            RedCenTeleSpin.setValue(0);
-            RedCorAutoSpin.setValue(0);
-            RedCorTeleSpin.setValue(0);
-            BlueCenAutoSpin.setValue(0);
-            BlueCenTeleSpin.setValue(0);
-            BlueCorAutoSpin.setValue(0);
-            BlueCorTeleSpin.setValue(0);
-            isFullscreen = false;
-            resetTimerElements();        
-    }
-        
-        public void play(String filename){
-          try{
-            InputStream inputStream = getClass().getResourceAsStream("/ftc/goal/counter/gamesound/" + filename + ".wav");
-            AudioStream audioStream = new AudioStream(inputStream);
-            AudioPlayer.player.start(audioStream);
-          }catch (Exception e){ System.out.print("didn't work."); }
-        }
 
     @Override
     public void update(Observable o, Object arg) {
-        if(scoreIsAuto()) {
-
-            AudDisplay1600.State.setText("Autonomous Mode");
-            AudDisplay1366.State.setText("Autonomous Mode");
-            AudDisplay1920.State.setText("Autonomous Mode");
-            AudDisplay1024.State.setText("Autonomous Mode");
-            AudDisplay800.State.setText("Autonomous Mode");
-            AudDisplay1280.State.setText("Autonomous Mode");
-        } else {
-
-            AudDisplay1600.State.setText("Driver-Controlled Mode");
-            AudDisplay1366.State.setText("Driver-Controlled Mode");
-            AudDisplay1920.State.setText("Driver-Controlled Mode");
-            AudDisplay1024.State.setText("Driver-Controlled Mode");
-            AudDisplay800.State.setText("Driver-Controlled Mode");
-            AudDisplay1280.State.setText("Driver-Controlled Mode");
+        if(arg instanceof TimerMessage) {
+            TimerMessage msg = (TimerMessage) arg;
+            if(arg.equals(TimerMessage.RESET)) {
+                resetcounters();
+            }
         }
-
-        String timerText = String.format("%01d:%02d", (MatchTimer.timeRemaining() / 60), (MatchTimer.timeRemaining() % 60));
-
-        AudDisplay1600.TimerDisplay.setText(timerText);
-        AudDisplay1366.TimerDisplay.setText(timerText);
-        AudDisplay1920.TimerDisplay.setText(timerText);
-        AudDisplay1024.TimerDisplay.setText(timerText);
-        AudDisplay800.TimerDisplay.setText(timerText);
-        AudDisplay1280.TimerDisplay.setText(timerText);
     }
 
     private boolean scoreIsAuto() {
@@ -236,7 +131,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
 
         
     public void IncrsRedCenA(){
-         if(JoystickTest.PressJSRedCenAbtn==true && JoystickTest.pressLstJSRedCenAbtn!=true && SettingsUI.RedCenBtn == true){
+         if(JoystickTest.PressJSRedCenAbtn && !JoystickTest.pressLstJSRedCenAbtn && SettingsUI.RedCenBtn){
             if(scoreIsAuto()){
                 RedCenAutoSpin.setValue(++RedCenAuto);
                 JoystickTest.pressLstJSRedCenAbtn = true;     
@@ -246,9 +141,9 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
             }
         }
     }
-    
+
     public void DcrsRedCenB(){
-         if(JoystickTest.PressJSRedCenBbtn==true && JoystickTest.pressLstJSRedCenBbtn!=true && SettingsUI.RedCenBtn == true){
+         if(JoystickTest.PressJSRedCenBbtn && !JoystickTest.pressLstJSRedCenBbtn && SettingsUI.RedCenBtn){
             if(scoreIsAuto()){
                 if(RedCenAuto < 1){
                     RedCenAuto = 0;   
@@ -268,9 +163,9 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
             }  
         }
     }
-        
-     public void IncrsRedCenLB(){
-         if(JoystickTest.PressJSRedCenLB==true && JoystickTest.pressLstJSRedCenLB!=true && SettingsUI.RedCenLeft==true){
+
+    public void IncrsRedCenLB(){
+         if(JoystickTest.PressJSRedCenLB && !JoystickTest.pressLstJSRedCenLB && SettingsUI.RedCenLeft){
                 if(scoreIsAuto()){
                           RedCenAutoSpin.setValue(++RedCenAuto);
                           JoystickTest.pressLstJSRedCenLB = true;     
@@ -282,7 +177,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsRedCenLT(){
-         if(JoystickTest.PressJSRedCenLT==true && JoystickTest.pressLstJSRedCenLT!=true && SettingsUI.RedCenLeft==true){
+         if(JoystickTest.PressJSRedCenLT && !JoystickTest.pressLstJSRedCenLT && SettingsUI.RedCenLeft){
             if(scoreIsAuto()){
                 if(RedCenAuto < 1){
                     RedCenAuto = 0;   
@@ -304,10 +199,10 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
          public void IncrsRedCenRB(){
-         if(JoystickTest.PressJSRedCenRB==true && JoystickTest.pressLstJSRedCenRB!=true && SettingsUI.RedCenRight==true){
+         if(JoystickTest.PressJSRedCenRB && !JoystickTest.pressLstJSRedCenRB && SettingsUI.RedCenRight){
                 if(scoreIsAuto()){
                           RedCenAutoSpin.setValue(++RedCenAuto);
-                          JoystickTest.pressLstJSRedCenRB = true;     
+                          JoystickTest.pressLstJSRedCenRB = true;
                 } else {
                           RedCenTeleSpin.setValue(++RedCenTele);
                           JoystickTest.pressLstJSRedCenRB = true;     
@@ -316,7 +211,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
          }
         
     public void DcrsRedCenRT(){
-         if(JoystickTest.PressJSRedCenRT==true && JoystickTest.pressLstJSRedCenRT!=true && SettingsUI.RedCenRight==true){
+         if(JoystickTest.PressJSRedCenRT && !JoystickTest.pressLstJSRedCenRT && SettingsUI.RedCenRight){
             if(scoreIsAuto()){
                 if(RedCenAuto < 1){
                     RedCenAuto = 0;   
@@ -338,7 +233,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void IncrsBlueCenA(){
-         if(JoystickTest.PressJSBlueCenAbtn==true && JoystickTest.pressLstJSBlueCenAbtn!=true && SettingsUI.BlueCenBtn == true){
+         if(JoystickTest.PressJSBlueCenAbtn && !JoystickTest.pressLstJSBlueCenAbtn && SettingsUI.BlueCenBtn){
             if(scoreIsAuto()){
                 BlueCenAutoSpin.setValue(++BlueCenAuto);
                 JoystickTest.pressLstJSBlueCenAbtn = true;     
@@ -350,7 +245,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void DcrsBlueCenB(){
-         if(JoystickTest.PressJSBlueCenBbtn==true && JoystickTest.pressLstJSBlueCenBbtn!=true && SettingsUI.BlueCenBtn == true){
+         if(JoystickTest.PressJSBlueCenBbtn && !JoystickTest.pressLstJSBlueCenBbtn && SettingsUI.BlueCenBtn){
             if(scoreIsAuto()){
                 if(BlueCenAuto < 1){
                     BlueCenAuto = 0;   
@@ -372,7 +267,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
      
     public void IncrsBlueCenLB(){
-         if(JoystickTest.PressJSBlueCenLB==true && JoystickTest.pressLstJSBlueCenLB!=true && SettingsUI.BlueCenLeft==true){
+         if(JoystickTest.PressJSBlueCenLB && !JoystickTest.pressLstJSBlueCenLB && SettingsUI.BlueCenLeft){
             if(scoreIsAuto()){
                 BlueCenAutoSpin.setValue(++BlueCenAuto);
                 JoystickTest.pressLstJSBlueCenLB = true;     
@@ -384,7 +279,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsBlueCenLT(){
-         if(JoystickTest.PressJSBlueCenLT==true && JoystickTest.pressLstJSBlueCenLT!=true && SettingsUI.BlueCenLeft==true){
+         if(JoystickTest.PressJSBlueCenLT && !JoystickTest.pressLstJSBlueCenLT && SettingsUI.BlueCenLeft){
             if(scoreIsAuto()){
                 if(BlueCenAuto < 1){
                     BlueCenAuto = 0;   
@@ -406,7 +301,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void IncrsBlueCenRB(){
-         if(JoystickTest.PressJSBlueCenRB==true && JoystickTest.pressLstJSBlueCenRB!=true && SettingsUI.BlueCenRight==true){
+         if(JoystickTest.PressJSBlueCenRB && !JoystickTest.pressLstJSBlueCenRB && SettingsUI.BlueCenRight){
             if(scoreIsAuto()){
                 BlueCenAutoSpin.setValue(++BlueCenAuto);
                 JoystickTest.pressLstJSBlueCenRB = true;     
@@ -418,7 +313,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsBlueCenRT(){
-         if(JoystickTest.PressJSBlueCenRT==true && JoystickTest.pressLstJSBlueCenRT!=true && SettingsUI.BlueCenRight==true){
+         if(JoystickTest.PressJSBlueCenRT && !JoystickTest.pressLstJSBlueCenRT && SettingsUI.BlueCenRight){
             if(scoreIsAuto()){
                 if(BlueCenAuto < 1){
                     BlueCenAuto = 0;   
@@ -440,7 +335,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
             
     public void IncrsRedCorA(){
-         if(JoystickTest.PressJSRedCorAbtn==true && JoystickTest.pressLstJSRedCorAbtn!=true && SettingsUI.RedCorBtn == true){
+         if(JoystickTest.PressJSRedCorAbtn && !JoystickTest.pressLstJSRedCorAbtn && SettingsUI.RedCorBtn){
             if(scoreIsAuto()){
                 RedCorAutoSpin.setValue(++RedCorAuto);
                 JoystickTest.pressLstJSRedCorAbtn = true;     
@@ -452,7 +347,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void DcrsRedCorB(){
-         if(JoystickTest.PressJSRedCorBbtn==true && JoystickTest.pressLstJSRedCorBbtn!=true && SettingsUI.RedCorBtn == true){
+         if(JoystickTest.PressJSRedCorBbtn && !JoystickTest.pressLstJSRedCorBbtn && SettingsUI.RedCorBtn){
             if(scoreIsAuto()){
                 if(RedCorAuto < 1){
                     RedCorAuto = 0;   
@@ -474,7 +369,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void IncrsRedCorLB(){
-         if(JoystickTest.PressJSRedCorLB==true && JoystickTest.pressLstJSRedCorLB!=true && SettingsUI.RedCorLeft==true){
+         if(JoystickTest.PressJSRedCorLB && !JoystickTest.pressLstJSRedCorLB && SettingsUI.RedCorLeft){
             if(scoreIsAuto()){
                 RedCorAutoSpin.setValue(++RedCorAuto);
                 JoystickTest.pressLstJSRedCorLB = true;     
@@ -486,7 +381,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsRedCorLT(){
-         if(JoystickTest.PressJSRedCorLT==true && JoystickTest.pressLstJSRedCorLT!=true && SettingsUI.RedCorLeft==true){
+         if(JoystickTest.PressJSRedCorLT && !JoystickTest.pressLstJSRedCorLT && SettingsUI.RedCorLeft){
             if(scoreIsAuto()){
                 if(RedCorAuto < 1){
                     RedCorAuto = 0;   
@@ -508,7 +403,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void IncrsRedCorRB(){
-         if(JoystickTest.PressJSRedCorRB==true && JoystickTest.pressLstJSRedCorRB!=true && SettingsUI.RedCorRight==true){
+         if(JoystickTest.PressJSRedCorRB && !JoystickTest.pressLstJSRedCorRB && SettingsUI.RedCorRight){
             if(scoreIsAuto()){
                 RedCorAutoSpin.setValue(++RedCorAuto);
                 JoystickTest.pressLstJSRedCorRB = true;     
@@ -520,7 +415,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsRedCorRT(){
-         if(JoystickTest.PressJSRedCorRT==true && JoystickTest.pressLstJSRedCorRT!=true && SettingsUI.RedCorRight==true){
+         if(JoystickTest.PressJSRedCorRT && !JoystickTest.pressLstJSRedCorRT && SettingsUI.RedCorRight){
             if(scoreIsAuto()){
                 if(RedCorAuto < 1){
                     RedCorAuto = 0;   
@@ -542,7 +437,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         }
         
     public void IncrsBlueCorA(){
-         if(JoystickTest.PressJSBlueCorAbtn==true && JoystickTest.pressLstJSBlueCorAbtn!=true && SettingsUI.BlueCorBtn == true){
+         if(JoystickTest.PressJSBlueCorAbtn && !JoystickTest.pressLstJSBlueCorAbtn && SettingsUI.BlueCorBtn){
             if(scoreIsAuto()){
                 BlueCorAutoSpin.setValue(++BlueCorAuto);
                 JoystickTest.pressLstJSBlueCorAbtn = true;     
@@ -554,7 +449,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void DcrsBlueCorB(){
-        if(JoystickTest.PressJSBlueCorBbtn==true && JoystickTest.pressLstJSBlueCorBbtn!=true && SettingsUI.BlueCorBtn == true){
+        if(JoystickTest.PressJSBlueCorBbtn && !JoystickTest.pressLstJSBlueCorBbtn && SettingsUI.BlueCorBtn){
             if(scoreIsAuto()){
                 if(BlueCorAuto < 1){
                     BlueCorAuto = 0;   
@@ -574,8 +469,9 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
             }  
         }     
     }
+
     public void IncrsBlueCorLB(){
-         if(JoystickTest.PressJSBlueCorLB==true && JoystickTest.pressLstJSBlueCorLB!=true && SettingsUI.BlueCorLeft==true){
+         if(JoystickTest.PressJSBlueCorLB && !JoystickTest.pressLstJSBlueCorLB && SettingsUI.BlueCorLeft){
             if(scoreIsAuto()){
                 BlueCorAutoSpin.setValue(++BlueCorAuto);
                 JoystickTest.pressLstJSBlueCorLB = true;     
@@ -587,7 +483,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsBlueCorLT(){
-         if(JoystickTest.PressJSBlueCorLT==true && JoystickTest.pressLstJSBlueCorLT!=true && SettingsUI.BlueCorLeft==true){
+         if(JoystickTest.PressJSBlueCorLT && !JoystickTest.pressLstJSBlueCorLT && SettingsUI.BlueCorLeft){
             if(scoreIsAuto()){
                 if(BlueCorAuto < 1){
                     BlueCorAuto = 0;   
@@ -609,7 +505,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
     
     public void IncrsBlueCorRB(){
-        if(JoystickTest.PressJSBlueCorRB==true && JoystickTest.pressLstJSBlueCorRB!=true && SettingsUI.BlueCorRight==true){
+        if(JoystickTest.PressJSBlueCorRB && !JoystickTest.pressLstJSBlueCorRB && SettingsUI.BlueCorRight){
             if(scoreIsAuto()){
                 BlueCorAutoSpin.setValue(++BlueCorAuto);
                 JoystickTest.pressLstJSBlueCorRB = true;     
@@ -621,7 +517,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     }
         
     public void DcrsBlueCorRT(){
-         if(JoystickTest.PressJSBlueCorRT==true && JoystickTest.pressLstJSBlueCorRT!=true && SettingsUI.BlueCorRight==true){
+         if(JoystickTest.PressJSBlueCorRT && !JoystickTest.pressLstJSBlueCorRT && SettingsUI.BlueCorRight){
             if(scoreIsAuto()){
                 if(BlueCorAuto < 1){
                     BlueCorAuto = 0;   
@@ -652,6 +548,7 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        remoteTimer = new com.maths22.ftc.scoring.RemoteTimer();
         RedAlliance = new javax.swing.JPanel();
         RedCorJSStatus = new javax.swing.JPanel();
         RedCorTeleSpin = new javax.swing.JSpinner();
@@ -679,26 +576,18 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         BlueCenTeleLabel = new javax.swing.JLabel();
         BlueCorTeleSpin = new javax.swing.JSpinner();
         FTCLogoSmall = new javax.swing.JLabel();
-        Timer = new javax.swing.JLabel();
-        ResetButton = new javax.swing.JButton();
         VersionInfo = new javax.swing.JLabel();
         SettingButton = new javax.swing.JButton();
         AboutButton = new javax.swing.JButton();
         copyright = new javax.swing.JLabel();
-        auddisplay = new javax.swing.JButton();
         HeaderLabel1 = new javax.swing.JLabel();
-        remoteTimer = new RemoteTimer();
+        timerPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Vortex Counter");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setPreferredSize(new java.awt.Dimension(440, 600));
-        setResizable(true);
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
+        setPreferredSize(new java.awt.Dimension(440, 650));
+        setResizable(false);
 
         RedAlliance.setBackground(new java.awt.Color(237, 28, 36));
         RedAlliance.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Red Vortex", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 12))); // NOI18N
@@ -949,18 +838,6 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         FTCLogoSmall.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         FTCLogoSmall.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ftc/goal/counter/images/ftclogofull.png"))); // NOI18N
 
-        Timer.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
-        Timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        Timer.setText("Match Timer: 2:30");
-
-        ResetButton.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        ResetButton.setText("RESET");
-        ResetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ResetButtonActionPerformed(evt);
-            }
-        });
-
         VersionInfo.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         VersionInfo.setText("VER: " + version);
         VersionInfo.setToolTipText("");
@@ -985,17 +862,11 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         copyright.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         copyright.setText("Copyright (c) 2016 FIRST");
 
-        auddisplay.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        auddisplay.setText("DISPLAY");
-        auddisplay.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                auddisplayActionPerformed(evt);
-            }
-        });
-
         HeaderLabel1.setFont(new java.awt.Font("Arial", 1, 48)); // NOI18N
         HeaderLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         HeaderLabel1.setText("Vortex Counter");
+
+        timerPanel.setLayout(new java.awt.GridLayout(1, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1006,72 +877,51 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(copyright)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(VersionInfo))
-                            .addComponent(FTCLogoSmall, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                            .addComponent(remoteTimer.panel, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
+                            .addComponent(FTCLogoSmall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(SettingButton)
-                                    .addComponent(auddisplay))
+                                    .addComponent(copyright)
+                                    .addComponent(SettingButton))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(AboutButton, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(ResetButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                    .addComponent(VersionInfo, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(AboutButton, javax.swing.GroupLayout.Alignment.TRAILING))))
                         .addContainerGap())
+                    .addComponent(HeaderLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(RedAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BlueAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-            .addComponent(Timer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(HeaderLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(timerPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(RedAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(BlueAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(FTCLogoSmall)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(HeaderLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Timer, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(RedAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BlueAlliance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-
-                    .addComponent(remoteTimer.panel, javax.swing.GroupLayout.DEFAULT_SIZE, 416, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(SettingButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(auddisplay))
-                            )
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(copyright))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(ResetButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(AboutButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(VersionInfo)))
-                .addGap(36, 36, 36))
+                .addComponent(timerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(SettingButton)
+                    .addComponent(AboutButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(copyright)
+                    .addComponent(VersionInfo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void ResetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ResetButtonActionPerformed
-        resetcounters();
-    }//GEN-LAST:event_ResetButtonActionPerformed
 
     private void SettingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SettingButtonActionPerformed
         if(!settings.isVisible()){
@@ -1082,92 +932,10 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     private void AboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AboutButtonActionPerformed
         if(!about.isVisible()){
             about.setVisible(true);
+            logger.info("Set About Window Visible");
         }
     }//GEN-LAST:event_AboutButtonActionPerformed
-//Pro Java Coding Going on here:
-    private void auddisplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auddisplayActionPerformed
-        switch (SettingsUI.AudDispOpen) {
-            case 0://1080
-                if(!AudDisp1920.isVisible() && !audIsOpen){
-                    AudDisp1920.dispose();
-                    if (AudDisp1920.isUndecorated()){
-                        AudDisp1920.setUndecorated(false);
-                        AudDisp1920.setResizable(true);
-                    }   AudDisp1920.setVisible(true);
-                    audIsOpen = true;
-                 }
-                break;
-            case 1://1600
-                if(!AudDisp1600.isVisible() && !audIsOpen){
-                    AudDisp1600.dispose();
-                    if (AudDisp1600.isUndecorated()){
-                        AudDisp1600.setUndecorated(false);
-                        AudDisp1600.setResizable(true);
-                    }
-                    AudDisp1600.setVisible(true);
-                    audIsOpen = true;
-                }
-                break;
-            case 2://1366
-                if(!AudDisp1366.isVisible() && !audIsOpen){
-                    AudDisp1366.dispose();
-                    if (AudDisp1366.isUndecorated()){
-                        AudDisp1366.setUndecorated(false);
-                        AudDisp1366.setResizable(true);
-                    }   AudDisp1366.setVisible(true);
-                    audIsOpen = true;
-                }
-                break;
-            case 3://720
-                if(!AudDisp1280.isVisible() && !audIsOpen){
-                   AudDisp1280.dispose();
-                   if (AudDisp1280.isUndecorated()){
-                       AudDisp1280.setUndecorated(false);
-                       AudDisp1280.setResizable(true);
-                   }   AudDisp1280.setVisible(true);
-                   audIsOpen = true;
-                }
-                break;
-            case 4://1024
-                if(!AudDisp1024.isVisible() && !audIsOpen){
-                   AudDisp1024.dispose();
-                   if (AudDisp1024.isUndecorated()){
-                       AudDisp1024.setUndecorated(false);
-                       AudDisp1024.setResizable(true);
-                   }   AudDisp1024.setVisible(true);
-                   audIsOpen = true;
-                }
-                break;
-            case 5://800
-                 if(!AudDisp800.isVisible() && !audIsOpen){
-                    AudDisp800.dispose();
-                    if (AudDisp800.isUndecorated()){
-                        AudDisp800.setUndecorated(false);
-                        AudDisp800.setResizable(true);
-                    }   AudDisp800.setVisible(true);
-                    audIsOpen = true;
-                 }
-                break;
-            default:
-        break;
-        }
-        audIsOpen = true;
-        auddisplay.setEnabled(false);
-        isFullscreen = false;
-        SettingsUI.toggleFullscreen.setEnabled(true);
-        SettingsUI.toggleFullscreen.setToolTipText("Toggle Full Screen mode for the Audience Display");
-    }//GEN-LAST:event_auddisplayActionPerformed
 
-
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        int key = evt.getKeyCode();
-        if(key == KeyEvent.VK_ESCAPE){
-            SettingsUI.exitFullscreen();
-        }else if(key == KeyEvent.VK_F5){
-            SettingsUI.toggleFullscreen();
-        }
-    }//GEN-LAST:event_formKeyPressed
 
     public static GoalCounterUI goal;
     /**
@@ -1196,26 +964,19 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
         /* Create and display the form */
         goal = new GoalCounterUI();
         goal.setVisible(true);
+        logger.info("Created Main Goal Display");
         settings = new SettingsUI();
         settings.setVisible(true);
-        AudDisp1920 = new AudDisplay1920();
-        AudDisp1920.setVisible(false);
-        AudDisp1600 = new AudDisplay1600();
-        AudDisp1600.setVisible(false);
-        AudDisp1366 = new AudDisplay1366();
-        AudDisp1366.setVisible(false);
-        AudDisp1280 = new AudDisplay1280();
-        AudDisp1280.setVisible(false);
-        AudDisp1024 = new AudDisplay1024();
-        AudDisp1024.setVisible(false);
-        AudDisp800 = new AudDisplay800();
-        AudDisp800.setVisible(false);
+        logger.info("Created Settings Display");
         JSConfigView = new ViewJSConfig();
-        JSConfigView.setVisible(false);        
+        JSConfigView.setVisible(false);
+        logger.info("Created Joystick Mapping Display");
         about = new AboutUI();
         about.setVisible(false);
-        JS = new JoystickTest();  
-        
+        logger.info("Created About Display");
+        JS = new JoystickTest();
+        logger.info("Created Joystick Reader");
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1248,15 +1009,10 @@ public class GoalCounterUI extends javax.swing.JFrame implements Observer {
     public static javax.swing.JSpinner RedCorTeleSpin;
     private javax.swing.JLabel RedVortCenLabel;
     private javax.swing.JLabel RedVortCorLabel;
-    private javax.swing.JButton ResetButton;
     private javax.swing.JButton SettingButton;
-    public static javax.swing.JLabel Timer;
     private javax.swing.JLabel VersionInfo;
-    public static javax.swing.JButton auddisplay;
     private javax.swing.JLabel copyright;
-
-    private static RemoteTimer remoteTimer;
-
-
+    private static com.maths22.ftc.scoring.RemoteTimer remoteTimer;
+    private javax.swing.JPanel timerPanel;
     // End of variables declaration//GEN-END:variables
 }

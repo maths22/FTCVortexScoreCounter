@@ -36,9 +36,6 @@ public class ViewJSConfig extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        TimerToggle2 = new javax.swing.JLabel();
-        xToggleModes = new javax.swing.JLabel();
-        TimerToggle1 = new javax.swing.JLabel();
         rbRedCenter = new javax.swing.JLabel();
         rbRedCorner = new javax.swing.JLabel();
         rbBlueCenter = new javax.swing.JLabel();
@@ -51,8 +48,6 @@ public class ViewJSConfig extends javax.swing.JFrame {
         lbRedCorner = new javax.swing.JLabel();
         lbBlueCenter = new javax.swing.JLabel();
         lbBlueCorner = new javax.swing.JLabel();
-        ResetEverything2 = new javax.swing.JLabel();
-        ResetEverything1 = new javax.swing.JLabel();
         background = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -60,32 +55,12 @@ public class ViewJSConfig extends javax.swing.JFrame {
         setBackground(new java.awt.Color(0, 0, 0));
         setIconImages(null);
         setMinimumSize(new java.awt.Dimension(400, 300));
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setMaximumSize(new java.awt.Dimension(2147483647, 2147483647));
         jPanel1.setMinimumSize(new java.awt.Dimension(400, 300));
         jPanel1.setPreferredSize(new java.awt.Dimension(100, 100));
         jPanel1.setLayout(null);
-
-        TimerToggle2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        TimerToggle2.setText("Timer Controller");
-        jPanel1.add(TimerToggle2);
-        TimerToggle2.setBounds(320, 60, 110, 20);
-
-        xToggleModes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        xToggleModes.setText("Can be used on Timer Controller");
-        jPanel1.add(xToggleModes);
-        xToggleModes.setBounds(170, 350, 220, 17);
-
-        TimerToggle1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        TimerToggle1.setText("Can be used on");
-        jPanel1.add(TimerToggle1);
-        TimerToggle1.setBounds(320, 40, 110, 20);
 
         rbRedCenter.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         rbRedCenter.setText("Asigned to Red Center");
@@ -155,16 +130,6 @@ public class ViewJSConfig extends javax.swing.JFrame {
         jPanel1.add(lbBlueCorner);
         lbBlueCorner.setBounds(0, 200, 160, 20);
 
-        ResetEverything2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        ResetEverything2.setText("Timer Controller");
-        jPanel1.add(ResetEverything2);
-        ResetEverything2.setBounds(210, 110, 110, 17);
-
-        ResetEverything1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        ResetEverything1.setText("Can be used on");
-        jPanel1.add(ResetEverything1);
-        ResetEverything1.setBounds(210, 90, 110, 17);
-
         background.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ftc/goal/counter/images/ControllerMap.png"))); // NOI18N
         jPanel1.add(background);
         background.setBounds(40, 0, 500, 370);
@@ -182,16 +147,6 @@ public class ViewJSConfig extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        int key = evt.getKeyCode();
-        if(key == KeyEvent.VK_ESCAPE){
-            SettingsUI.exitFullscreen();
-        }else if(key == KeyEvent.VK_F5){
-            SettingsUI.toggleFullscreen();
-        }
-    }//GEN-LAST:event_formKeyPressed
-
     /**
      * @param args the command line arguments
      */
@@ -230,10 +185,6 @@ public class ViewJSConfig extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    public static javax.swing.JLabel ResetEverything1;
-    public static javax.swing.JLabel ResetEverything2;
-    public static javax.swing.JLabel TimerToggle1;
-    public static javax.swing.JLabel TimerToggle2;
     public static javax.swing.JLabel aBlueCenter;
     public static javax.swing.JLabel aBlueCorner;
     public static javax.swing.JLabel aRedCenter;
@@ -248,6 +199,5 @@ public class ViewJSConfig extends javax.swing.JFrame {
     public static javax.swing.JLabel rbBlueCorner;
     public static javax.swing.JLabel rbRedCenter;
     public static javax.swing.JLabel rbRedCorner;
-    public static javax.swing.JLabel xToggleModes;
     // End of variables declaration//GEN-END:variables
 }
